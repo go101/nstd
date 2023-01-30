@@ -1,20 +1,23 @@
 /*
-Package nstd provides some common used functions and types
-missing in the Go standard library.
+Package builtin provide some common used functions.
 */
-package nstd
+package builtin
 
 import (
 	"fmt"
 )
 
+func Panic(a ...any) {
+	panic(fmt.Sprint(a...))
+}
+
 func Panicf(format string, a ...any) {
 	panic(fmt.Sprintf(format, a...))
 }
 
-func Assert(b bool, msg any) {
+func Assert(b bool, a ...any) {
 	if !b {
-		panic(msg)
+		panic(fmt.Sprint(a...))
 	}
 }
 

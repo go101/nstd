@@ -8,13 +8,15 @@ import (
 
 // Methods of *Mutex return a *Mutex result, so that
 // these methods may be called in a chain.
+// It is just a simpler wrapper of the [sync.Mutex].
 // The main purpose of this type is to support
 // the following use case:
 //
+//    var aMutext nstd.Mutex
+//
 //	func foo() {
-//		...
 //		defer aMutex.Lock().Unlock()
-//		...
+//		... // do something
 //	}
 type Mutex struct {
 	mu sync.Mutex

@@ -1,12 +1,14 @@
 /*
-Package slices provides several common slice operations,
+Package slice provides several common slice operations,
 with more options than the ones provided in the [builtin]
-and [slices] [runtime] standard packages.
+and [slices] standard packages.
 */
 package slices
 
 // A MakeOp is used to make a new slice.
 // By default, a MakeOp tries to use up hosting memory blocks of slice elements.
+//
+// ToDo: move to the top "nstd" package?
 type MakeOp[S ~[]T, T any] struct {
 	Clipped bool
 }
@@ -31,6 +33,8 @@ func (maker *MakeOp[S, T]) Do(len int) S {
 
 // A MergeOp is used to merge multipl slices (with the same element type).
 // By default, a MergeOp tries to use up hosting memory blocks of slice elements.
+//
+// ToDo: move to the top "nstd" package?
 type MergeOp[S ~[]T, T any] struct {
 	Clipped bool
 }
@@ -96,6 +100,8 @@ func (merger *MergeOp[S, T]) do(n int, first S, ss ...S) S {
 
 // A CloneOp is used to clone a slice.
 // By default, a CloneOp tries to use up hosting memory blocks of slice elements.
+//
+// ToDo: move to the top "nstd" package?
 type CloneOp[S ~[]T, T any] struct {
 	Clipped bool
 }
@@ -134,6 +140,8 @@ func (cloner *CloneOp[S, T]) Do(s S) S {
 //
 // Warning: this function doesn't detect element overlapping. So it is best
 // to make sure the target slice doesn't overlap any source slice.
+//
+// ToDo: move to the top "nstd" package?
 func MultiCopy[S ~[]T, T any](into S, ss ...S) (nElements, nCompletes, nElementsOfIncomplete int) {
 	var n = 0
 	for i, s := range ss {
@@ -147,14 +155,16 @@ func MultiCopy[S ~[]T, T any](into S, ss ...S) (nElements, nCompletes, nElements
 }
 
 // MultiAppend appends (elements of) multiple (source) slices
-// into the target slice (into) and returnes a slices composed of the elements
+// into the target slice (into) and returns a slice composed of the elements
 // if the target slice and all source slices.
-// A new backing array will be allocated if the free slots the target slice
+// A new backing array will be allocated if the free slots of the target slice
 // are not enough to hold all of the appended elements, in which case,
 // the append operation actually merges the target slice and the source slices.
 //
 // Warning: this function doesn't detect element overlapping. So it is best
 // to make sure the target slice doesn't overlap any source slice.
+//
+// ToDo: move to the top "nstd" package?
 func MultiAppend[S ~[]T, T any](into S, ss ...S) S {
 	var n = 0
 	for i := range ss {
@@ -177,7 +187,7 @@ func MultiAppend[S ~[]T, T any](into S, ss ...S) S {
 }
 
 // ElemPtrs builds a new slice which elements are the pointers
-// to the input slice.
+// to the elements in the input slice.
 func ElemPtrs[S ~[]T, T any](s S) []*T {
 	if s == nil {
 		return nil
