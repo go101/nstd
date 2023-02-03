@@ -1,18 +1,17 @@
-/*
-Package builtin provide some common used functions.
-*/
-package builtin
+package nstd
 
 import (
 	"fmt"
 )
 
-func Panic(a ...any) {
+func Panic(a ...any) bool {
 	panic(fmt.Sprint(a...))
+	return true
 }
 
-func Panicf(format string, a ...any) {
+func Panicf(format string, a ...any) bool {
 	panic(fmt.Sprintf(format, a...))
+	return true
 }
 
 func Assert(b bool, a ...any) {

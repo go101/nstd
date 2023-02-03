@@ -1,5 +1,4 @@
-// Package conv provides some value conversion functions.
-package conv
+package nstd
 
 // B2i converts a bool value to int (true -> 1, false -> 0).
 func B2i(x bool) int {

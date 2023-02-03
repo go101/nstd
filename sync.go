@@ -1,6 +1,4 @@
-// Package sync is based upon the standard [sync] package,
-// to provide some conveniences for Go programming.
-package sync
+package nstd
 
 import (
 	"sync"

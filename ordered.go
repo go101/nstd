@@ -1,17 +1,11 @@
-// Package math provides some functions with nummeric parameters.
-// The functions are all generic.
-package ordered
-
-import (
-	"go101.org/nstd/numeric"
-)
+package nstd
 
 // Ordered is a constraint that permits any ordered type: any type
 // that supports the operators < <= >= >.
 // If future releases of Go add new ordered types,
 // this constraint will be modified to include them.
 type Ordered interface {
-	numeric.Integer | numeric.Float | ~string
+	Integer | Float | ~string
 }
 
 func Compare[T Ordered](x, y T) int {
