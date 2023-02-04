@@ -45,7 +45,7 @@ func ByteSeqCompare[X, Y ByteSeq](x X, y Y) int {
 			}
 		}
 	}
-	
+
 	return len(x) - len(y)
 }
 

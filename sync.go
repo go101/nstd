@@ -10,7 +10,7 @@ import (
 // The main purpose of this type is to support
 // the following use case:
 //
-//    var aMutext nstd.Mutex
+//	var aMutex nstd.Mutex
 //
 //	func foo() {
 //		defer aMutex.Lock().Unlock()

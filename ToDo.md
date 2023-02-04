@@ -1,32 +1,25 @@
 
 
 
-## try to merge all packages into the "nstd" package.
+## ByteSeq
 
 ```go
 package nstd
 
-type strPkg struct{
-	_ [0]*strPkg
+type byteSeq[T any] struct{
+	_ [0]*byteSeq[T]
 }
 
-var String strPkg
+var ByteSeq byteSeq
 
-func (strPkg) TrimLeadingSpaces(s string) string {...}
-func (strPkg) TrimTrailingSpaces(s string) string {...}
+func (ByteSeq[T]) TrimLeadingSpaces(s T) T {...}
+func (ByteSeq[T[) TrimTrailingSpaces(s T) T {...}
 // or
-func (strPkg) TrimStartingSpaces(s string) string {...}
-func (strPkg) TrimEndingSpaces(s string) string {...}
+func (ByteSeqq[T]) TrimStartingSpaces(s T) T {...}
+func (ByteSeqq[T]) TrimEndingSpaces(s T) T {...}
 
 
 ```
 
-```go
-import "nstd"
-
-void main() {
-	s = nstd.String.TrimStartingSpaces(s)
-}
-```
 
 

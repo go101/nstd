@@ -5,7 +5,7 @@ type SliceOpConfig struct {
 	Clip bool
 
 	// Potential more:
-	// Arera 
+	// Arera
 }
 
 func mergeSlices[S ~[]E, E any](n int, clip bool, first S, ss ...S) S {
