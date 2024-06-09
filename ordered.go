@@ -5,55 +5,32 @@ package nstd
 // If future releases of Go add new ordered types,
 // this constraint will be modified to include them.
 type Ordered interface {
-	Integer | Float | ~string
+	Real | ~string
 }
 
-func Compare[T Ordered](x, y T) int {
-	if x == y {
-		return 0
-	}
+func minOfTwo[T Ordered](x, y T) T {
 	if x < y {
-		return -1
-	}
-	return 1
-}
-
-func Min[T Ordered](x, y T) T {
-	if x <= y {
 		return x
 	}
 	return y
 }
 
-func MinN[T Ordered](vs ...T) T {
-	if len(vs) == 0 {
-		panic("no values")
+// Clamp clamps an ordered value within a range.
+// Both min and max are inclusive.
+// If v is NaN, then NaN is returned.
+//
+// See:
+// * https://github.com/golang/go/issues/58146
+func Clamp[T Ordered](v, min, max T) T {
+	if min > max {
+		Panicf("min (%v) > max (%v)!", min, max)
 	}
-	v := vs[0]
-	for _, x := range vs[1:] {
-		if v > x {
-			v = x
-		}
-	}
-	return v
-}
 
-func Max[T Ordered](x, y T) T {
-	if x > y {
-		return x
+	if v < min {
+		return min
 	}
-	return y
-}
-
-func MaxN[T Ordered](vs ...T) T {
-	if len(vs) == 0 {
-		panic("no values")
-	}
-	v := vs[0]
-	for _, x := range vs[1:] {
-		if v < x {
-			v = x
-		}
+	if v > max {
+		return max
 	}
 	return v
 }

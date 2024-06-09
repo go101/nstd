@@ -34,3 +34,25 @@ type Float interface {
 type Complex interface {
 	~complex64 | ~complex128
 }
+
+type Real interface {
+	Integer | Float
+}
+
+type Numeric interface {
+	Integer | Float | Complex
+}
+
+// Sign returns the sign of a value of a [Signed] integer type.
+// For a negative integer, it returns -1;
+// for a positive integer, it returns 1;
+// for 0, it returns 0.
+func Sign[T Signed](x T) int {
+	if x < 0 {
+		return -1
+	}
+	if x > 0 {
+		return 1
+	}
+	return 0
+}

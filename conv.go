@@ -1,7 +1,10 @@
 package nstd
 
-// B2i converts a bool value to int (true -> 1, false -> 0).
-func B2i(x bool) int {
+// Btoi converts a bool value to int (true -> 1, false -> 0).
+//
+// See:
+// * https://github.com/golang/go/issues/64825
+func Btoi[B ~bool](x B) int {
 	if x {
 		return 1
 	}
