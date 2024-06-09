@@ -77,20 +77,19 @@ func SliceFrom[T any](vs ...T) []T {
 	return vs
 }
 
-// IsOfType checks whether or not the concrete type of x
-// is of type T.
+// TypeAssert asserts an interface value x to type T.
+// If the assertion succeeds, true is returned, othewise, false is returned.
+// If into is not nil, then the concrete value of x will be assigned to
+// the value referenced by into.
 //
 // See:
 //     https://github.com/golang/go/issues/65846
-func IsOfType[T any](x any) bool {
-	_, ok := x.(T)
-	return ok
-}
-
-// AssertInto asserts an interface value x into the value referenced by t.
-// If the assertion succeeds, true is returned, othewise, false is returned.
-func AssertInto[T any](x any, t *T) (ok bool) {
-	*t, ok = x.(T)
+func TypeAssert[T any](x any, into *T) (ok bool) {
+	if into != nil {
+		*into, ok = x.(T)
+	} else {
+		_, ok = x.(T)
+	}
 	return
 }
 

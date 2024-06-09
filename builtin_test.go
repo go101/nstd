@@ -57,37 +57,20 @@ func testNew[T any](v T, t *testing.T) {
 	}
 }
 
-func TestIsOfType(t *testing.T) {
-	testIsOfType[int](1, true, t)
-	testIsOfType[int](1.0, false, t)
-	testIsOfType[bool](true, true, t)
-	testIsOfType[int](true, false, t)
-
-	testIsOfType[any](1, true, t)
-	testIsOfType[any](1.0, true, t)
-	testIsOfType[any](true, true, t)
+func TestTypeAssert(t *testing.T) {
+	testTypeAssert(1, (*int)(nil), true, t)
+	testTypeAssert(1, nstd.New(123), true, t)
+	testTypeAssert(1, nstd.New(true), false, t)
+	testTypeAssert(true, nstd.New(true), true, t)
+	testTypeAssert(1, nstd.New(true), false, t)
+	testTypeAssert(true, nstd.New(any(0)), true, t)
 }
 
-func testIsOfType[T any](v any, expected bool, t *testing.T) {
-	var x T
-	if nstd.IsOfType[T](v) != expected {
-		t.Fatalf("*IsOfType[%T](%v) != %v", x, v, expected)
-	}
-}
-
-func TestAssertInto(t *testing.T) {
-	testAssertInto(1, nstd.New(0), true, t)
-	testAssertInto(1, nstd.New(true), false, t)
-	testAssertInto(true, nstd.New(true), true, t)
-	testAssertInto(1, nstd.New(true), false, t)
-	testAssertInto(true, nstd.New(any(0)), true, t)
-}
-
-func testAssertInto[T any](v any, p *T, shouldOkay bool, t *testing.T) {
-	if nstd.AssertInto(v, p) != shouldOkay {
-		t.Fatalf("*AssertInto[%T](%v, %T) != %v", *p, v, p, shouldOkay)
-	} else if shouldOkay && !reflect.DeepEqual(v, *p) {
-		t.Fatalf("*AssertInto[%T](%v, %T) fails. (got %v)", *p, v, p, *p)
+func testTypeAssert[T any](v any, p *T, shouldOkay bool, t *testing.T) {
+	if nstd.TypeAssert(v, p) != shouldOkay {
+		t.Fatalf("*TypeAssert[%T](%v, %T) != %v", *p, v, p, shouldOkay)
+	} else if shouldOkay && p != nil && !reflect.DeepEqual(v, *p) {
+		t.Fatalf("*TypeAssert[%T](%v, %T) fails. (got %v)", *p, v, p, *p)
 	}
 }
 
