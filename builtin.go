@@ -88,7 +88,7 @@ func IsOfType[T any](x any) bool {
 }
 
 // AssertInto asserts an interface value x into the value referenced by t.
-// If the assertion succeeds, true is returned, othewise, flase is returned.
+// If the assertion succeeds, true is returned, othewise, false is returned.
 func AssertInto[T any](x any, t *T) (ok bool) {
 	*t, ok = x.(T)
 	return

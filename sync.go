@@ -58,6 +58,7 @@ func (wg *WaitGroup) Go(fs ...func()) {
 	}
 	wg.Add(len(fs))
 	for _, f := range fs {
+		f := f
 		go func() {
 			defer wg.Done()
 			f()

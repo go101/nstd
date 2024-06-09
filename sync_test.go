@@ -10,8 +10,8 @@ func TestMutexAndWaitGroup(t *testing.T) {
 	const N = 1000
 	var n = 0
 	defer func() {
-		if n != N*5 {
-			t.Fatalf("n != %d", N*5)
+		if expected := N * 6; n != expected {
+			t.Fatalf("n != %d", expected)
 		}
 	}()
 
@@ -25,7 +25,7 @@ func TestMutexAndWaitGroup(t *testing.T) {
 			n += 1
 		}, func() {
 			defer m.Lock().Unlock()
-			n += 1
+			n += 2
 		})
 		wg.GoN(3, func() {
 			defer m.Lock().Unlock()
