@@ -1,8 +1,28 @@
 package nstd
 
 import (
+	"fmt"
 	"io"
 )
+
+// CheckWriteResult checks whether or not a Write method is badly implemented.
+//
+// See:
+//    * https://github.com/golang/go/issues/67921
+//    * https://github.com/golang/go/issues/9096
+func WriteWithCheck(w io.Writer, p []byte) (n int, err error) {
+	n, err = w.Write(p)
+	if n < 0 {
+		n = 0
+		err = fmt.Errorf("errBadWrite: n (%d) < 0", n)
+	} else if n > len(p) {
+		n = len(p)
+		err = fmt.Errorf("errBadWrite: n (%d) > len (%d)", n, len(p))
+	} else if n < len(p) && err == nil {
+		err = fmt.Errorf("errBadWrite: n (%d) < len (%d) but no errors", n, len(p))
+	}
+	return
+}
 
 // WriteStringWithBuffer writes a string into an [io.Writer] with a provided buffer.
 // The buffer is used to avoid a string-> []byte conversion (which might allocate).
@@ -16,13 +36,10 @@ func WriteStringWithBuffer(w io.Writer, s string, buffer []byte) (int, error) {
 	for len(s) > 0 {
 		x := buffer[:copy(buffer, s)]
 
-		k, err := w.Write(x)
-		n += k
+		_, err := WriteWithCheck(w, x)
+		n += len(x)
 		if err != nil {
 			return n, err
-		}
-		if k != len(x) {
-			return n, io.ErrShortWrite
 		}
 
 		s = s[len(x):]
