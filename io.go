@@ -4,8 +4,9 @@ import (
 	"io"
 )
 
-// WriteStringWithBuffer writes a string into an [io.Writer].
+// WriteStringWithBuffer writes a string into an [io.Writer] with a provided buffer.
 // The buffer is used to avoid a string-> []byte conversion (which might allocate).
+// This function is like [io.CopyBuffer] but much simpler.
 func WriteStringWithBuffer(w io.Writer, s string, buffer []byte) (int, error) {
 	if len(buffer) == 0 {
 		panic("the buffer is")
@@ -13,13 +14,20 @@ func WriteStringWithBuffer(w io.Writer, s string, buffer []byte) (int, error) {
 
 	var n = 0
 	for len(s) > 0 {
-		x := copy(buffer, s)
-		y, err := w.Write(buffer[:x])
-		n += y
-		if err != nil {
-			return n, err
+		x := buffer[:copy(buffer, s)]
+		s = s[len(x):]
+
+		for {
+			k, err := w.Write(x)
+			n += k
+			if err != nil {
+				return n, err
+			}
+			if k == len(x) {
+				break
+			}
+			x = x[k:]
 		}
-		s = s[y:]
 	}
 
 	return n, nil
