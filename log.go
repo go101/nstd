@@ -7,7 +7,7 @@ import (
 // Different from log.Print, Log returns a true bool value,
 // so that it can be used in
 //
-//    _ = Debug && nstd.Log(...)
+//	_ = Debug && nstd.Log(...)
 func Log(v ...any) bool {
 	log.Print(v...)
 	return true
@@ -16,7 +16,7 @@ func Log(v ...any) bool {
 // Different from log.Printf, Logf returns a true bool value,
 // so that it can be used in
 //
-//    _ = Debug && nstd.Logf(...)
+//	_ = Debug && nstd.Logf(...)
 func Logf(format string, v ...any) bool {
 	log.Printf(format, v...)
 	return true
@@ -25,7 +25,7 @@ func Logf(format string, v ...any) bool {
 // Different from log.Println, Logln returns a true bool value,
 // so that it can be used in
 //
-//    _ = Debug && nstd.Logln(...)
+//	_ = Debug && nstd.Logln(...)
 func Logln(v ...any) bool {
 	log.Println(v...)
 	return true

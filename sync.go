@@ -49,7 +49,8 @@ type WaitGroup struct {
 // GoN starts several concurrent tasks waited by wg.
 //
 // See:
-//     https://github.com/golang/go/issues/18022
+//
+//	https://github.com/golang/go/issues/18022
 func (wg *WaitGroup) Go(fs ...func()) {
 	for i, f := range fs {
 		if f == nil {

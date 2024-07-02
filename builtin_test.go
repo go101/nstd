@@ -7,6 +7,8 @@ import (
 	"go101.org/nstd"
 )
 
+type blank = struct{} // used internally
+
 func TestZero(t *testing.T) {
 	testZero(1, 0, t)
 	testZero("go", "", t)

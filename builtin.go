@@ -65,9 +65,9 @@ func New[T any](v T) *T {
 
 // SliceFrom is used to create a slice from some values of the same type.
 // Some use scenarios:
-// 1. Convert multiple results of a function call to a []any slice,
-//    then use the slice in fmt.Printf alike functions.
-// 2. Construct a []T slice from some T values without using the []T{...} form.
+//  1. Convert multiple results of a function call to a []any slice,
+//     then use the slice in fmt.Printf alike functions.
+//  2. Construct a []T slice from some T values without using the []T{...} form.
 //
 // NOTE: SliceFrom(aSlice...) returns aSlice,
 //
@@ -83,7 +83,8 @@ func SliceFrom[T any](vs ...T) []T {
 // the value referenced by into.
 //
 // See:
-//     https://github.com/golang/go/issues/65846
+//
+//	https://github.com/golang/go/issues/65846
 func TypeAssert[T any](x any, into *T) (ok bool) {
 	if into != nil {
 		*into, ok = x.(T)

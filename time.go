@@ -10,11 +10,11 @@ import (
 //
 // Use example:
 //
-//     logElapsedTime := nstd.ElapsedTimeLogFunc("")
-//     ... // do task 1
-//     logElapsedTime("task 1:")
-//     ... // do task 1
-//     logElapsedTime("task 2:")
+//	logElapsedTime := nstd.ElapsedTimeLogFunc("")
+//	... // do task 1
+//	logElapsedTime("task 1:")
+//	... // do task 1
+//	logElapsedTime("task 2:")
 func ElapsedTimeLogFunc(commonPrefix string) func(prefix string) bool {
 	var x string
 	if commonPrefix != "" {
