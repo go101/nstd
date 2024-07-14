@@ -7,12 +7,20 @@ func MakeSlice[S ~[]E, E any](len int) S {
 	return append(S(nil), make(S, len)...)
 }
 
-// CollectMapKeys collects all the keys in a map into freshly
-// created slice. The length and capacity of the result slice
-// are both the length of the map.
+// BlankMap returns a blank map which has the same type as the input map.
+// * Usage 1: `ZeroMap[MapType](nil, 32)
+// * Usage 2: `ZeroMap(aMap, 8)
+func ZeroMap[M ~map[K]E, K comparable, E any](m M, capHint int) M {
+	return make(M, capHint)
+}
+
+// CollectMapKeys collects all the keys in a map into a freshly
+// created result slice. The length and capacity of the result slice
+// are both equal to the length of the map.
 //
 // See:
-//     https://github.com/golang/go/issues/68261
+//
+//	https://github.com/golang/go/issues/68261
 func CollectMapKeys[K comparable, E any](m map[K]E) []K {
 	if len(m) == 0 {
 		return nil

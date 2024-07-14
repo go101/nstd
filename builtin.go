@@ -44,16 +44,16 @@ func Eval[T any](v T) T {
 	return v
 }
 
-// Zero[T]() returns the zero value of type T.
-func Zero[T any](...T) T {
+// ZeroOf[T]() and ZeroOf(valueOfT) both return the zero value of type T.
+func ZeroOf[T any](...T) T {
 	var x T
 	return x
 }
 
-// ZeroIt(p) zeros the value referenced by the pointer p.
-// ZeroIt is useful for resetting values of some unexported types,
+// Zero(p) zeros the value referenced by the pointer p.
+// Zero is useful for resetting values of some unexported types,
 // or resetting values of some other packages but without importing those packages.
-func ZeroIt[T any](p *T) {
+func Zero[T any](p *T) {
 	var x T
 	*p = x
 }

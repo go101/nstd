@@ -9,6 +9,21 @@ import (
 
 type blank = struct{} // used internally
 
+func TestZeroOf(t *testing.T) {
+	testZeroOf(1, 0, t)
+	testZeroOf("go", "", t)
+	testZeroOf(true, false, t)
+	testZeroOf(struct{}{}, struct{}{}, t)
+	testZeroOf([2]byte{1, 2}, [2]byte{}, t)
+	testZeroOf([]byte{1, 2}, nil, t)
+}
+
+func testZeroOf[T any](v, zero T, t *testing.T) {
+	if z := nstd.ZeroOf(v); !reflect.DeepEqual(z, zero) {
+		t.Fatalf("Zero(%v) != %v (but %v)", v, z, zero)
+	}
+}
+
 func TestZero(t *testing.T) {
 	testZero(1, 0, t)
 	testZero("go", "", t)
@@ -19,24 +34,9 @@ func TestZero(t *testing.T) {
 }
 
 func testZero[T any](v, zero T, t *testing.T) {
-	if z := nstd.Zero(v); !reflect.DeepEqual(z, zero) {
-		t.Fatalf("Zero(%v) != %v (but %v)", v, z, zero)
-	}
-}
-
-func TestZeroIt(t *testing.T) {
-	testZeroIt(1, 0, t)
-	testZeroIt("go", "", t)
-	testZeroIt(true, false, t)
-	testZeroIt(struct{}{}, struct{}{}, t)
-	testZeroIt([2]byte{1, 2}, [2]byte{}, t)
-	testZeroIt([]byte{1, 2}, nil, t)
-}
-
-func testZeroIt[T any](v, zero T, t *testing.T) {
 	var old = v
 	var p = &v
-	if nstd.ZeroIt(p); !reflect.DeepEqual(v, zero) {
+	if nstd.Zero(p); !reflect.DeepEqual(v, zero) {
 		t.Fatalf("ZeroIt(&%v) != %v (but %v)", old, v, zero)
 	}
 }

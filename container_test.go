@@ -18,6 +18,22 @@ func TestMakeSlice(t *testing.T) {
 	}
 }
 
+func TestZeroMap(t *testing.T) {
+	var m = map[int]bool{1: true, 0: false}
+	{
+		var bm = nstd.ZeroMap(m, 32)
+		if len(bm) != 0 {
+			t.Fatalf("ZeroMap: len(bm) != 0 (%v)", len(bm))
+		}
+	}
+	{
+		var bm = nstd.ZeroMap[map[int]bool](nil, 32)
+		if len(bm) != 0 {
+			t.Fatalf("ZeroMap: len(bm) != 0 (%v)", len(bm))
+		}
+	}
+}
+
 func TestCollectMapKeys(t *testing.T) {
 	const N = 1024
 	var m = make(map[int]blank, N)
