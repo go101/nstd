@@ -17,7 +17,7 @@ func Panicf(format string, a ...any) bool {
 
 // Must panics if err is not nil; otherwise, the T value is returned.
 //
-// See https://github.com/golang/go/issues/58280
+// See: https://github.com/golang/go/issues/58280
 func Must[T any](v T, err error) T {
 	if err != nil {
 		panic(err)
@@ -37,6 +37,7 @@ func Must2[T1, T2 any](v1 T1, v2 T2, err error) (T1, T2) {
 // in a statement.
 //
 // See:
+//
 // * https://go101.org/article/evaluation-orders.html
 // * https://github.com/golang/go/issues/27804
 // * https://github.com/golang/go/issues/36449
@@ -45,7 +46,7 @@ func Eval[T any](v T) T {
 }
 
 // ZeroOf[T]() and ZeroOf(valueOfT) both return the zero value of type T.
-func ZeroOf[T any](...T) T {
+func ZeroOf[T any](T) T {
 	var x T
 	return x
 }
@@ -71,8 +72,7 @@ func New[T any](v T) *T {
 //
 // NOTE: SliceFrom(aSlice...) returns aSlice,
 //
-// See:
-// * https://github.com/golang/go/issues/61213
+// See: https://github.com/golang/go/issues/61213
 func SliceFrom[T any](vs ...T) []T {
 	return vs
 }
@@ -82,9 +82,7 @@ func SliceFrom[T any](vs ...T) []T {
 // If into is not nil, then the concrete value of x will be assigned to
 // the value referenced by into.
 //
-// See:
-//
-//	https://github.com/golang/go/issues/65846
+// See: https://github.com/golang/go/issues/65846
 func TypeAssert[T any](x any, into *T) (ok bool) {
 	if into != nil {
 		*into, ok = x.(T)

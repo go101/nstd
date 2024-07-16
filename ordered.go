@@ -19,8 +19,7 @@ func minOfTwo[T Ordered](x, y T) T {
 // Both min and max are inclusive.
 // If v is NaN, then NaN is returned.
 //
-// See:
-// * https://github.com/golang/go/issues/58146
+// See: https://github.com/golang/go/issues/58146
 func Clamp[T Ordered](v, min, max T) T {
 	if min > max {
 		Panicf("min (%v) > max (%v)!", min, max)

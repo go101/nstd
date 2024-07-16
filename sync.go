@@ -34,8 +34,7 @@ func (m *Mutex) Unlock() *Mutex {
 
 // Do guards the execution of a function in Lock() and Unlock()
 //
-// See:
-// * https://github.com/golang/go/issues/63941
+// See: https://github.com/golang/go/issues/63941
 func (m *Mutex) Do(f func()) {
 	defer m.Lock().Unlock()
 	f()
@@ -48,9 +47,7 @@ type WaitGroup struct {
 
 // GoN starts several concurrent tasks waited by wg.
 //
-// See:
-//
-//	https://github.com/golang/go/issues/18022
+// See: https://github.com/golang/go/issues/18022
 func (wg *WaitGroup) Go(fs ...func()) {
 	for i, f := range fs {
 		if f == nil {

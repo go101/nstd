@@ -8,8 +8,9 @@ import (
 // CheckWriteResult checks whether or not a Write method is badly implemented.
 //
 // See:
-//   - https://github.com/golang/go/issues/67921
-//   - https://github.com/golang/go/issues/9096
+//
+// * https://github.com/golang/go/issues/67921
+// * https://github.com/golang/go/issues/9096
 func WriteWithCheck(w io.Writer, p []byte) (n int, err error) {
 	n, err = w.Write(p)
 	if n < 0 {

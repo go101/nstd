@@ -18,9 +18,7 @@ func ZeroMap[M ~map[K]E, K comparable, E any](m M, capHint int) M {
 // created result slice. The length and capacity of the result slice
 // are both equal to the length of the map.
 //
-// See:
-//
-//	https://github.com/golang/go/issues/68261
+// See: https://github.com/golang/go/issues/68261
 func CollectMapKeys[K comparable, E any](m map[K]E) []K {
 	if len(m) == 0 {
 		return nil
