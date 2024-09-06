@@ -41,11 +41,13 @@ func (m *Mutex) Do(f func()) {
 }
 
 // WaitGroup extends sync.WaitGroup.
+// Each WaitGroup maintains an internal count which initial value is zero.
 type WaitGroup struct {
-	sync.WaitGroup
+	wg sync.WaitGroup
 }
 
-// GoN starts several concurrent tasks waited by wg.
+// GoN starts several concurrent tasks and increases the internal count by len(fs).
+// The internal count will be descreased by one when each of the task is done.
 //
 // See: https://github.com/golang/go/issues/18022
 func (wg *WaitGroup) Go(fs ...func()) {
@@ -54,26 +56,47 @@ func (wg *WaitGroup) Go(fs ...func()) {
 			Panicf("fs[%d] is nil", i)
 		}
 	}
-	wg.Add(len(fs))
+	wg.wg.Add(len(fs))
 	for _, f := range fs {
 		f := f
 		go func() {
-			defer wg.Done()
+			defer wg.wg.Done()
 			f()
 		}()
 	}
 }
 
-// GoN starts a concurrent task n times. These task gorutines are waited by wg,
+// GoN starts a task n times concurrently and increases the internal count by n.
+// The internal count will be descreased by one when each of the task instances is done.
 func (wg *WaitGroup) GoN(n int, f func()) {
+	if n < 0 {
+		panic("the count must not be negative")
+	}
 	if f == nil {
 		panic("f is nil")
 	}
-	wg.Add(n)
+	wg.wg.Add(n)
 	for i := 0; i < n; i++ {
 		go func() {
-			defer wg.Done()
+			defer wg.wg.Done()
 			f()
 		}()
 	}
+}
+
+// Wait blocks until the internal counter is zero.
+func (wg *WaitGroup) Wait() {
+	wg.wg.Wait()
+}
+
+// WaitChannel returns a channel which reads will block until the internal counter is zero.
+func (wg *WaitGroup) WaitChannel() <-chan struct{} {
+	var c = make(chan struct{})
+
+	go func() {
+		wg.wg.Wait()
+		close(c)
+	}()
+
+	return c
 }
