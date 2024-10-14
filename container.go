@@ -7,6 +7,14 @@ func MakeSlice[S ~[]E, E any](len int) S {
 	return append(S(nil), make(S, len)...)
 }
 
+// MakeSliceWithMinCap makes a slice with capacity not smaller than cap.
+// The length of the result slice is zero.
+//
+// See: https://github.com/golang/go/issues/69872
+func MakeSliceWithMinCap[S ~[]E, E any](cap int) S {
+	return append(S(nil), make(S, cap)...)[:0]
+}
+
 // BlankMap returns a blank map which has the same type as the input map.
 // * Usage 1: `ZeroMap[MapType](nil, 32)
 // * Usage 2: `ZeroMap(aMap, 8)
