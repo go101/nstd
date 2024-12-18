@@ -16,6 +16,8 @@ func Panicf(format string, a ...any) bool {
 }
 
 // Must panics if err is not nil; otherwise, the T value is returned.
+// 
+// The function is mianly to support chain calls like Must(...).MethodOfT(...).
 //
 // See: https://github.com/golang/go/issues/58280
 func Must[T any](v T, err error) T {
@@ -23,14 +25,6 @@ func Must[T any](v T, err error) T {
 		panic(err)
 	}
 	return v
-}
-
-// Must2 panics if err is not nil; otherwise, the T1 and T2 values are returned.
-func Must2[T1, T2 any](v1 T1, v2 T2, err error) (T1, T2) {
-	if err != nil {
-		panic(err)
-	}
-	return v1, v2
 }
 
 // Eval is used to ensure the evaluation order of some expressions
