@@ -1,4 +1,3 @@
 // nstd package provides some missing types and functions
-// in standard library.
-//
+// in the standard library.
 package nstd

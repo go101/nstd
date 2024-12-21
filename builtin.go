@@ -16,7 +16,7 @@ func Panicf(format string, a ...any) bool {
 }
 
 // Must panics if err is not nil; otherwise, the T value is returned.
-// 
+//
 // The function is mianly to support chain calls like Must(...).MethodOfT(...).
 //
 // See: https://github.com/golang/go/issues/58280
