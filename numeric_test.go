@@ -1,9 +1,7 @@
-package nstd_test
+package nstd
 
 import (
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestSign(t *testing.T) {
@@ -15,8 +13,8 @@ func TestSign(t *testing.T) {
 	testSign[int32](0, 0, t)
 }
 
-func testSign[S nstd.Signed](v S, sign int, t *testing.T) {
-	if sn := nstd.Sign(v); sn != sign {
+func testSign[S Signed](v S, sign int, t *testing.T) {
+	if sn := Sign(v); sn != sign {
 		t.Fatalf("Sign(%v) != %v (but %v)", v, sign, sn)
 	}
 }

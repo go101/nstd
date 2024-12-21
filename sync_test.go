@@ -1,9 +1,7 @@
-package nstd_test
+package nstd
 
 import (
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestMutexAndWaitGroup(t *testing.T) {
@@ -15,10 +13,10 @@ func TestMutexAndWaitGroup(t *testing.T) {
 		}
 	}()
 
-	var wg nstd.WaitGroup
+	var wg WaitGroup
 
 	var f = func() {
-		var m nstd.Mutex
+		var m Mutex
 		for range [1000]struct{}{} {
 			wg.Go(func() {
 				defer m.Lock().Unlock()

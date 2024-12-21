@@ -1,10 +1,8 @@
-package nstd_test
+package nstd
 
 import (
 	"bytes"
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestWriteStringWithBuffer(t *testing.T) {
@@ -18,7 +16,7 @@ func testWriteStringWithBuffer(s string, t *testing.T) {
 	for _, size := range []int{1, 64, 100, 789, 1024} {
 		buf := make([]byte, size)
 		var w bytes.Buffer
-		n, err := nstd.WriteStringWithBuffer(&w, s, buf)
+		n, err := WriteStringWithBuffer(&w, s, buf)
 		if err != nil {
 			continue
 		}

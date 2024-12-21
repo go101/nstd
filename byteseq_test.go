@@ -1,10 +1,8 @@
-package nstd_test
+package nstd
 
 import (
 	"bytes"
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestByteSeqCommonPrefix(t *testing.T) {
@@ -23,12 +21,12 @@ func testByteSeqCommonPrefix_4_cases(x, y string, expectedLen int, t *testing.T)
 	testByteSeqCommonPrefix([]byte(x), []byte(y), expectedLen, t)
 }
 
-func hasPrefix[T nstd.ByteSeq](x, x2 T) bool {
+func hasPrefix[T ByteSeq](x, x2 T) bool {
 	return bytes.HasPrefix([]byte(x), []byte(x2))
 }
 
-func testByteSeqCommonPrefix[X, Y nstd.ByteSeq](x X, y Y, expectedLen int, t *testing.T) {
-	x2, y2 := nstd.ByteSeqCommonPrefix(x, y)
+func testByteSeqCommonPrefix[X, Y ByteSeq](x X, y Y, expectedLen int, t *testing.T) {
+	x2, y2 := ByteSeqCommonPrefix(x, y)
 	if len(x2) != expectedLen {
 		t.Fatalf("ByteSeqCommonPrefix(%T(%s), %T(%s)). Expected length (%v) != len(%s)", x, x, y, y, expectedLen, x2)
 	}
@@ -55,19 +53,19 @@ func TestReverseBytes(t *testing.T) {
 	testReverseBytes("你好！abc", []byte{'c', 'b', 'a', 0x81, 0xbc, 0xef, 0xbd, 0xa5, 0xe5, 0xa0, 0xbd, 0xe4}, t)
 }
 
-func testReverseBytes[SeqX, SeqY nstd.ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
+func testReverseBytes[SeqX, SeqY ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
 	x, y := []byte(sx), []byte(sy)
-	if string(nstd.ReverseBytes(x)) != string(sy) {
+	if string(ReverseBytes(x)) != string(sy) {
 		t.Fatalf("ReverseBytes(%s) != %s", x, sy)
 	}
-	if string(nstd.ReverseBytes(y)) != string(sx) {
+	if string(ReverseBytes(y)) != string(sx) {
 		t.Fatalf("ReverseBytes(%s) != %s", y, sx)
 	}
-	if str := string(y); string(nstd.ReverseBytes(nstd.ReverseBytes(y))) != str {
-		t.Fatalf("ReverseBytes(nstd.ReverseBytes((%s)) != %s", y, str)
+	if str := string(y); string(ReverseBytes(ReverseBytes(y))) != str {
+		t.Fatalf("ReverseBytes(ReverseBytes((%s)) != %s", y, str)
 	}
-	if str := string(x); string(nstd.ReverseBytes(nstd.ReverseBytes(x))) != str {
-		t.Fatalf("ReverseBytes(nstd.ReverseBytes((%s)) != %s", x, str)
+	if str := string(x); string(ReverseBytes(ReverseBytes(x))) != str {
+		t.Fatalf("ReverseBytes(ReverseBytes((%s)) != %s", x, str)
 	}
 }
 
@@ -80,19 +78,19 @@ func TestReverseByteSeq(t *testing.T) {
 	testReverseByteSeq("你好！abc", []byte{'c', 'b', 'a', 0x81, 0xbc, 0xef, 0xbd, 0xa5, 0xe5, 0xa0, 0xbd, 0xe4}, t)
 }
 
-func testReverseByteSeq[SeqX, SeqY nstd.ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
+func testReverseByteSeq[SeqX, SeqY ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
 	x, y := []byte(sx), []byte(sy)
-	if string(nstd.ReverseByteSeq(x)) != string(sy) {
+	if string(ReverseByteSeq(x)) != string(sy) {
 		t.Fatalf("ReverseByteSeq(%s) != %s", x, sy)
 	}
-	if string(nstd.ReverseByteSeq(y)) != string(sx) {
+	if string(ReverseByteSeq(y)) != string(sx) {
 		t.Fatalf("ReverseByteSeq(%s) != %s", y, sx)
 	}
-	if str := string(y); string(nstd.ReverseByteSeq(nstd.ReverseByteSeq(y))) != str {
-		t.Fatalf("ReverseByteSeq(nstd.ReverseByteSeq((%s)) != %s", y, str)
+	if str := string(y); string(ReverseByteSeq(ReverseByteSeq(y))) != str {
+		t.Fatalf("ReverseByteSeq(ReverseByteSeq((%s)) != %s", y, str)
 	}
-	if str := string(x); string(nstd.ReverseByteSeq(nstd.ReverseByteSeq(x))) != str {
-		t.Fatalf("ReverseByteSeq(nstd.ReverseByteSeq((%s)) != %s", x, str)
+	if str := string(x); string(ReverseByteSeq(ReverseByteSeq(x))) != str {
+		t.Fatalf("ReverseByteSeq(ReverseByteSeq((%s)) != %s", x, str)
 	}
 }
 
@@ -105,18 +103,18 @@ func TestReverseRuneSeq(t *testing.T) {
 	testReverseRuneSeq("你好！abc", "cba！好你", t)
 }
 
-func testReverseRuneSeq[SeqX, SeqY nstd.ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
+func testReverseRuneSeq[SeqX, SeqY ByteSeq](sx SeqX, sy SeqY, t *testing.T) {
 	x, y := []byte(sx), []byte(sy)
-	if string(nstd.ReverseRuneSeq(x)) != string(sy) {
+	if string(ReverseRuneSeq(x)) != string(sy) {
 		t.Fatalf("ReverseRuneSeq(%s) != %s", x, sy)
 	}
-	if string(nstd.ReverseRuneSeq(y)) != string(sx) {
+	if string(ReverseRuneSeq(y)) != string(sx) {
 		t.Fatalf("ReverseRuneSeq(%s) != %s", y, sx)
 	}
-	if str := string(y); string(nstd.ReverseRuneSeq(nstd.ReverseRuneSeq(y))) != str {
-		t.Fatalf("ReverseRuneSeq(nstd.ReverseRuneSeq((%s)) != %s", y, str)
+	if str := string(y); string(ReverseRuneSeq(ReverseRuneSeq(y))) != str {
+		t.Fatalf("ReverseRuneSeq(ReverseRuneSeq((%s)) != %s", y, str)
 	}
-	if str := string(x); string(nstd.ReverseRuneSeq(nstd.ReverseRuneSeq(x))) != str {
-		t.Fatalf("ReverseRuneSeq(nstd.ReverseRuneSeq((%s)) != %s", x, str)
+	if str := string(x); string(ReverseRuneSeq(ReverseRuneSeq(x))) != str {
+		t.Fatalf("ReverseRuneSeq(ReverseRuneSeq((%s)) != %s", x, str)
 	}
 }

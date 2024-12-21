@@ -1,10 +1,8 @@
-package nstd_test
+package nstd
 
 import (
 	"math"
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestClamp(t *testing.T) {
@@ -26,15 +24,15 @@ func TestClamp(t *testing.T) {
 	testClamp(math.NaN(), 1, 0, math.NaN(), t)
 }
 
-func testClamp[R nstd.Ordered](v, min, max, expected R, t *testing.T) {
-	if clamped := nstd.Clamp(v, min, max); clamped != expected {
+func testClamp[R Ordered](v, min, max, expected R, t *testing.T) {
+	if clamped := Clamp(v, min, max); clamped != expected {
 		if v == v || expected == expected {
 			t.Fatalf("Clamp(%v, %v, %v) != %v (but %v)", v, min, max, expected, clamped)
 		}
 	}
 }
 
-func testClampOfType[R nstd.Real](t *testing.T) {
+func testClampOfType[R Real](t *testing.T) {
 	var min R = 2
 	var max R = 8
 

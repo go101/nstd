@@ -1,16 +1,14 @@
-package nstd_test
+package nstd
 
 import (
 	"testing"
-
-	"go101.org/nstd"
 )
 
 func TestMakeSlice(t *testing.T) {
 	const N = 1024
 	var m = make(map[int]blank, N)
 	for i := range [N]blank{} {
-		m[cap(nstd.MakeSlice[[]byte](i))] = blank{}
+		m[cap(MakeSlice[[]byte](i))] = blank{}
 	}
 	if len(m) == N {
 		t.Fatalf("MakeSlice: len(m) == N (%v vs. %v)", len(m), N)
@@ -21,7 +19,7 @@ func TestMakeSliceWithMinCap(t *testing.T) {
 	var caps = []int{0, 1, 5, 8, 11, 12, 33, 35, 99, 1020, 1021, 1023, 1024}
 	var n = 0
 	for _, c := range caps {
-		var s = nstd.MakeSliceWithMinCap[[]bool](c)
+		var s = MakeSliceWithMinCap[[]bool](c)
 		if len(s) != 0 {
 			t.Fatalf("MakeSliceWithMinCap: len(s) == 0 (len=%d, c=%d)", len(s), c)
 		}
@@ -40,11 +38,11 @@ func TestMakeSliceWithMinCap(t *testing.T) {
 func TestSlice(t *testing.T) {
 	type S []int
 	var x = S{1, 2, 3}
-	var y = nstd.Slice(x).Clone()
-	if nstd.TypeOf(x) != nstd.TypeOf(y) {
-		t.Fatalf("SliceClone: TypeOf(x) != TypeOf(y)\n\t%s\n\t%s", nstd.TypeOf(x), nstd.TypeOf(y))
+	var y = Slice(x).Clone()
+	if TypeOf(x) != TypeOf(y) {
+		t.Fatalf("SliceClone: TypeOf(x) != TypeOf(y)\n\t%s\n\t%s", TypeOf(x), TypeOf(y))
 	}
-	for v := range nstd.Slice(x).RefIter {
+	for v := range Slice(x).RefIter {
 		*v *= 2
 	}
 	for i := range x {
@@ -53,9 +51,9 @@ func TestSlice(t *testing.T) {
 		}
 	}
 
-	var z = nstd.Slice(x).Unnamed()
-	if nstd.TypeOf(x) == nstd.TypeOf(z) {
-		t.Fatalf("SliceClone: TypeOf(x) == TypeOf(z)\n\t%s\n\t%s", nstd.TypeOf(x), nstd.TypeOf(z))
+	var z = Slice(x).Unnamed()
+	if TypeOf(x) == TypeOf(z) {
+		t.Fatalf("SliceClone: TypeOf(x) == TypeOf(z)\n\t%s\n\t%s", TypeOf(x), TypeOf(z))
 	}
 	z[0] = 99
 	if x[0] != z[0] {

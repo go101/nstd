@@ -2,14 +2,17 @@ package nstd
 
 import (
 	"log"
+	"os"
 )
+
+var debugLogger = log.New(os.Stderr, "[debug]: ", 0)
 
 // Debug calls [log.Print] and returns true,
 // so that it can be used in
 //
 //	_ = DebugMode && nstd.Debug(...)
 func Debug(v ...any) bool {
-	log.Print(v...)
+	debugLogger.Print(v...)
 	return true
 }
 
@@ -18,6 +21,20 @@ func Debug(v ...any) bool {
 //
 //	_ = DebugMode && nstd.Debugf(...)
 func Debugf(format string, v ...any) bool {
-	log.Printf(format, v...)
+	debugLogger.Printf(format, v...)
+	return true
+}
+
+// assert is used interanlly
+func assert(condition bool, failMessage string, args ...any) bool {
+	if !condition {
+		if len(args) == 0 {
+			debugLogger.Print(failMessage)
+		} else {
+			debugLogger.Printf(failMessage, args...)
+		}
+		panic("Assert fails")
+	}
+
 	return true
 }

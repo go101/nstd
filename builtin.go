@@ -4,6 +4,8 @@ import (
 	"fmt"
 )
 
+type blank = struct{} // used internally
+
 // Generally, Panicf(format, v...) is a short form of panic(fmt.Sprintf(format, v...)).
 // When format is blank, then it is a short form of panic(fmt.Sprint(v...)).
 func Panicf(format string, a ...any) bool {
