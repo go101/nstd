@@ -8,15 +8,15 @@ import (
 func TestZeroMap(t *testing.T) {
 	var m = map[int]bool{1: true, 0: false}
 	{
-		var bm = ZeroMap(m, 32)
+		var bm = MakeMapOf(m, 32)
 		if len(bm) != 0 {
-			t.Fatalf("ZeroMap: len(bm) != 0 (%v)", len(bm))
+			t.Fatalf("MakeMapOf: len(bm) != 0 (%v)", len(bm))
 		}
 	}
 	{
-		var bm = ZeroMap[map[int]bool](nil, 32)
+		var bm = MakeMapOf[map[int]bool](nil, 32)
 		if len(bm) != 0 {
-			t.Fatalf("ZeroMap: len(bm) != 0 (%v)", len(bm))
+			t.Fatalf("MakeMapOf: len(bm) != 0 (%v)", len(bm))
 		}
 	}
 }
