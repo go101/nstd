@@ -7,9 +7,9 @@ import (
 
 func TestNewError(t *testing.T) {
 	var base = strings.Repeat("abc", 3)
-	var e1 = NewError(base[0:3])
-	var e2 = NewError(base[3:6])
-	var e3 = NewError(base[6:9])
+	var e1 = Error(base[0:3])
+	var e2 = Error(base[3:6])
+	var e3 = Error(base[6:9])
 	if e1 != e2 {
 		t.Fatal("NewError: e1 != e2")
 	}

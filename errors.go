@@ -4,10 +4,10 @@ import (
 	"unique"
 )
 
-// New returns an error that formats as the given text.
+// Error returns an error that formats as the given text.
 // Different from errors.New in the std library, two calls
-// to NewError return a distinct error value if the texts are identical.
-func NewError(text string) error {
+// to Error return a distinct error value if the texts are identical.
+func Error(text string) error {
 	return errorString{unique.Make(text)}
 }
 
