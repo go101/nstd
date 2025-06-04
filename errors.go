@@ -6,7 +6,7 @@ import (
 
 // Error returns an error that formats as the given text.
 // Different from errors.New in the std library, two calls
-// to Error return a distinct error value if the texts are identical.
+// to Error return an identical error value if the texts are identical.
 func Error(text string) error {
 	return errorString{unique.Make(text)}
 }
