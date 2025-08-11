@@ -46,7 +46,7 @@ func TestAppendMapKeys(t *testing.T) {
 }
 
 func TestBoolKeyMap(t *testing.T) {
-	var m BoolKeyMap[bool, int]
+	var m BoolKeyMap[int]
 	m.Put(true, 123)
 	m.Put(false, 789)
 	var x = m.Get(true)
@@ -62,7 +62,7 @@ func TestBoolKeyMap(t *testing.T) {
 }
 
 func TestBoolElementMap(t *testing.T) {
-	var m BoolElementMap[int, bool]
+	var m BoolElementMap[int]
 	m.Put(1, false)
 	m.Put(2, false)
 	m.Put(3, false)

@@ -34,14 +34,14 @@ func AppendMapKeys[K comparable, E any](s []K, m map[K]E) []K {
 	return s
 }
 
-// BoolKeyMap is an optimized version of map[K]E, where K is a bool type.
-type BoolKeyMap[K ~bool, E any] struct {
+// BoolKeyMap is an optimized version of map[bool]E.
+type BoolKeyMap[E any] struct {
 	trueE  E
 	falseE E
 }
 
 // Put puts an entry {k, e} into m.
-func (m *BoolKeyMap[K, E]) Put(k K, e E) {
+func (m *BoolKeyMap[E]) Put(k bool, e E) {
 	if k {
 		m.trueE = e
 	} else {
@@ -50,7 +50,7 @@ func (m *BoolKeyMap[K, E]) Put(k K, e E) {
 }
 
 // Get returns the element indexed by key k.
-func (m *BoolKeyMap[K, E]) Get(k K) E {
+func (m *BoolKeyMap[E]) Get(k bool) E {
 	if k {
 		return m.trueE
 	} else {
@@ -58,15 +58,15 @@ func (m *BoolKeyMap[K, E]) Get(k K) E {
 	}
 }
 
-// BoolElementMap is optimized version of map[K]E, where E is a bool type.
+// BoolElementMap is optimized version of map[K]bool.
 // Entries with false element value will not be put in BoolElementMap maps.
-type BoolElementMap[K comparable, E ~bool] struct {
+type BoolElementMap[K comparable] struct {
 	m map[K]blank
 }
 
 // Put puts an entry {k, e} into m.
 // Note, if e is false and the corresponding entry exists, the entry is deleted.
-func (m *BoolElementMap[K, E]) Put(k K, e E) {
+func (m *BoolElementMap[K]) Put(k K, e bool) {
 	if e {
 		if m.m == nil {
 			m.m = make(map[K]blank)
@@ -78,7 +78,7 @@ func (m *BoolElementMap[K, E]) Put(k K, e E) {
 }
 
 // Get returns the element indexed by key k.
-func (m *BoolElementMap[K, E]) Get(k K) E {
+func (m *BoolElementMap[K]) Get(k K) bool {
 	_, has := m.m[k]
-	return E(has)
+	return has
 }
