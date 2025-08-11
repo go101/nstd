@@ -38,22 +38,22 @@ func TestMakeSliceWithMinCap(t *testing.T) {
 func TestSlice(t *testing.T) {
 	type S []int
 	var x = S{1, 2, 3}
-	var y = Slice(x).Clone()
+	var y = CloneSlice(x)
 	if TypeOf(x) != TypeOf(y) {
 		t.Fatalf("SliceClone: TypeOf(x) != TypeOf(y)\n\t%s\n\t%s", TypeOf(x), TypeOf(y))
 	}
-	for v := range Slice(x).RefIter {
+	for v := range SliceElemPointers(x) {
 		*v *= 2
 	}
 	for i := range x {
 		if x[i] != y[i]*2 {
-			t.Fatalf("SliceClone: x[%d] != y[%d] * 2 (%d : %d)", i, i, x[i], y[i])
+			t.Fatalf("SliceElemPointers: x[%d] != y[%d] * 2 (%d : %d)", i, i, x[i], y[i])
 		}
 	}
 
-	var z = Slice(x).Unnamed()
+	var z = UnnamedSlice(x)
 	if TypeOf(x) == TypeOf(z) {
-		t.Fatalf("SliceClone: TypeOf(x) == TypeOf(z)\n\t%s\n\t%s", TypeOf(x), TypeOf(z))
+		t.Fatalf("UnnamedSlice: TypeOf(x) == TypeOf(z)\n\t%s\n\t%s", TypeOf(x), TypeOf(z))
 	}
 	z[0] = 99
 	if x[0] != z[0] {
@@ -61,5 +61,9 @@ func TestSlice(t *testing.T) {
 	}
 	if y[0] == z[0] {
 		t.Fatalf("SliceClone: y[0] == z[0] (%d : %d)", y[0], z[0])
+	}
+	var w = UnnamedSlice(z)
+	if TypeOf(w) != TypeOf(z) {
+		t.Fatalf("UnnamedSlice: TypeOf(w) != TypeOf(z)\n\t%s\n\t%s", TypeOf(w), TypeOf(z))
 	}
 }
