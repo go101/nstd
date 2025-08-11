@@ -1,11 +1,11 @@
 package nstd
 
-// MakeMapOf returns a blank map which has the same type as the input map.
+// BlankMap returns a blank map which has the same type as the input map.
 // It is mainly used to avoid writing some verbose map type literals.
 //
-// * Usage 1: MakeMapOf[MapType](nil, 32)
-// * Usage 2: MakeMapOf(aMap, 8)
-func MakeMapOf[M ~map[K]E, K comparable, E any](_ M, capHint int) M {
+// * Usage 1: BlankMap[MapType](nil, 32)
+// * Usage 2: BlankMap(aMap, 8)
+func BlankMap[M ~map[K]E, K comparable, E any](_ M, capHint int) M {
 	return make(M, capHint)
 }
 

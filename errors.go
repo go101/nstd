@@ -11,6 +11,8 @@ func Error(text string) error {
 	return errorString{unique.Make(text)}
 }
 
+// Another approach: type errorString string.
+// But that results fat interface values.
 type errorString struct {
 	s unique.Handle[string]
 }
