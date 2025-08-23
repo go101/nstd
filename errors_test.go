@@ -36,6 +36,12 @@ type ComparableError struct {
 	error
 }
 
+type ZeroSizeError struct{}
+
+func (ZeroSizeError) Error() string {
+	return "0"
+}
+
 func TestTrackError(t *testing.T) {
 	var ie = IncomparableError{
 		x:     []int{1, 2},
@@ -72,6 +78,22 @@ func TestTrackError(t *testing.T) {
 	if !TrackError(ce, ce) {
 		t.Fatal("TrackError(ce, ce) should return true.")
 	}
+
+	var ze = ZeroSizeError{}
+	if !TrackError(ze, ze) {
+		t.Fatal("TrackError(ze, ze) should return true.")
+	}
+
+	func() {
+		defer func() {
+			if v := recover(); v == nil {
+				t.Fatal("TrackError(&ze, &ze) should panic.")
+			}
+		}()
+
+		TrackError(&ze, &ze)
+		panic("unreachable")
+	}()
 }
 
 func TestTrackErrorOf(t *testing.T) {
@@ -107,5 +129,34 @@ func TestTrackErrorOf(t *testing.T) {
 	}
 	if TrackErrorOf(&ce, ie) != nil {
 		t.Fatal("TrackErrorOf(&ce, ie) != nil")
+	}
+
+	type E struct{ error }
+	e := &E{error: errors.New("aaa")}
+	if **TrackErrorOf(*e, e) != *e {
+		t.Fatal("**TrackErrorOf(*e, e) != *e")
+	}
+	if *TrackErrorOf(*e, *e) != *e {
+		t.Fatal("*TrackErrorOf(*e, *e) != *e")
+	}
+	if *TrackErrorOf(e, *e) != *e {
+		t.Fatal("*TrackErrorOf(e, *e) != *e")
+	}
+	if **TrackErrorOf(e, e) != *e {
+		t.Fatal("**TrackErrorOf(e, e) != *e")
+	}
+
+	var ae error
+	if (*TrackErrorOf(*e, ae)).(E) != *e {
+		t.Fatal("(*TrackErrorOf(*e, ae)).(E) != *e")
+	}
+	if (*TrackErrorOf(e, ae)).(*E) != e {
+		t.Fatal("(*TrackErrorOf(e, ae)).(*E) != e")
+	}
+	if TrackErrorOf(ae, *e) != nil {
+		t.Fatal("TrackErrorOf(ae, *e) != nil")
+	}
+	if TrackErrorOf(ae, e) != nil {
+		t.Fatal("TrackErrorOf(ae, e) != nil")
 	}
 }
