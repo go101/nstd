@@ -77,8 +77,8 @@ func trackError(err, target error) bool {
 //
 //   - If *ErrorType is also an error type, then TrackErrorOf
 //     doesn't distinguish ErrorType and *ErrorType.
-//   - If ErrorType is pointer type, then TrackErrorOf doesn't
-//     distinguish ErrorType and its base type.
+//   - If ErrorType is pointer type and its base type is also an error type,
+//     then TrackErrorOf doesn't distinguish ErrorType and its base type.
 func TrackErrorOf[ErrorType error](err error, _ ...ErrorType) *ErrorType {
 	if err == nil {
 		return nil
