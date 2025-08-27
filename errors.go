@@ -22,10 +22,13 @@ func (e errorString) Error() string {
 	return e.s.Value()
 }
 
+var errorType = reflect.TypeOf((*error)(nil)).Elem()
+
 // TrackError reports whether any error in err's tree matches target.
 // It behaves almost the same as [errors.Is], except that
 //
 // * TrackError(anIncomparbleErr, anIncomparbleErr) panics.
+// * TrackError(&aComparableErr, aComparableErr) returns true.
 // * It panics if the type of target is a pointer which base type's size is 0.
 //
 // See: https://github.com/golang/go/issues/74488
@@ -48,6 +51,13 @@ func trackError(err, target error) bool {
 				panic("target should not be a pointer pointing to a zero-size value")
 			}
 			return true
+		}
+		errValue := reflect.ValueOf(err)
+		errType := errValue.Type()
+		if errType.Kind() == reflect.Pointer && errType.Elem().Implements(errorType) && !errValue.IsNil() {
+			if trackError(errValue.Elem().Interface().(error), target) {
+				return true
+			}
 		}
 
 		switch x := err.(type) {
@@ -135,8 +145,6 @@ func trackErrorOf(err error, target any, targetValue reflect.Value) (int, reflec
 
 	return 0, reflect.Value{}
 }
-
-var errorType = reflect.TypeOf((*error)(nil)).Elem()
 
 type targetInfo struct {
 	value        any

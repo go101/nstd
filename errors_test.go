@@ -94,6 +94,16 @@ func TestTrackError(t *testing.T) {
 		TrackError(&ze, &ze)
 		panic("unreachable")
 	}()
+
+	{
+		var ce = ComparableError{}
+		if !TrackError(&ce, ce) {
+			t.Fatal("TrackError(&ce, ce) should return true.")
+		}
+		if TrackError(ce, &ce) {
+			t.Fatal("TrackError(ce, &ce) should return false.")
+		}
+	}
 }
 
 func TestTrackErrorOf(t *testing.T) {
