@@ -13,8 +13,8 @@ import (
 //	logElapsedTime := nstd.ElapsedTimeLogFunc("")
 //	... // do task 1
 //	logElapsedTime("task 1:")
-//	... // do task 1
-//	logElapsedTime("task 2:")
+//	... // do task 2
+//	_ = showElapseLog && logElapsedTime("task 2:")
 func ElapsedTimeLogFunc(commonPrefix string) func(prefix string) bool {
 	var x string
 	if commonPrefix != "" {
@@ -29,4 +29,11 @@ func ElapsedTimeLogFunc(commonPrefix string) func(prefix string) bool {
 		log.Printf("%s%s%s%s%s", commonPrefix, x, prefix, y, time.Since(start))
 		return true
 	}
+}
+
+// ScaleDuration scales a time.Duration.
+//
+// See: https://github.com/golang/go/issues/75265
+func ScaleDuration(d time.Duration, s float64) time.Duration {
+	return time.Duration(float64(d) * s)
 }
