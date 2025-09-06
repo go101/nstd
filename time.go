@@ -30,10 +30,3 @@ func ElapsedTimeLogFunc(commonPrefix string) func(prefix string) bool {
 		return true
 	}
 }
-
-// ScaleDuration scales a time.Duration.
-//
-// See: https://github.com/golang/go/issues/75265
-func ScaleDuration(d time.Duration, s float64) time.Duration {
-	return time.Duration(float64(d) * s)
-}

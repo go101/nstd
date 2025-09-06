@@ -27,9 +27,9 @@ var errorType = reflect.TypeOf((*error)(nil)).Elem()
 // TrackError reports whether any error in err's tree matches target.
 // It behaves almost the same as [errors.Is], except that
 //
-// * TrackError(anIncomparbleErr, anIncomparbleErr) panics.
-// * TrackError(&aComparableErr, aComparableErr) returns true.
-// * It panics if the type of target is a pointer which base type's size is 0.
+//   - TrackError(anIncomparbleErr, anIncomparbleErr) panics.
+//   - TrackError(&aComparableErr, aComparableErr) returns true.
+//   - It panics if the type of target is a pointer which base type's size is 0.
 //
 // See: https://github.com/golang/go/issues/74488
 func TrackError(err, target error) bool {

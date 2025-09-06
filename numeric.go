@@ -40,7 +40,7 @@ type Real interface {
 }
 
 type Numeric interface {
-	Integer | Float | Complex
+	Real | Complex
 }
 
 // Sign returns the sign of a value of a [Signed] integer type.
