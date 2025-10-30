@@ -42,10 +42,11 @@ func TrackError(err, target error) bool {
 
 func trackError(err, target error) bool {
 	for {
-		if x, ok := err.(interface{ Is(error) bool }); ok && x.Is(target) {
-			return true
-		}
-		if err == target {
+		if x, ok := err.(interface{ Is(error) bool }); ok {
+			if x.Is(target) {
+				return true
+			}
+		} else if err == target {
 			tt := reflect.TypeOf(target)
 			if tt.Kind() == reflect.Pointer && tt.Elem().Size() == 0 {
 				panic("target should not be a pointer pointing to a zero-size value")
