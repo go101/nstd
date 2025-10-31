@@ -48,8 +48,9 @@ type WaitGroup struct {
 
 // GoN starts several concurrent tasks and increases the internal count by len(fs).
 // The internal count will be descreased by one when each of the task is done.
+// Note: if a call to any function in fs panics, then the whole program crashes.
 //
-// See: https://github.com/golang/go/issues/18022
+// See: https://github.com/golang/go/issues/18022 and https://github.com/golang/go/issues/76126
 func (wg *WaitGroup) Go(fs ...func()) {
 	for i, f := range fs {
 		if f == nil {
@@ -60,7 +61,14 @@ func (wg *WaitGroup) Go(fs ...func()) {
 	for _, f := range fs {
 		f := f
 		go func() {
-			defer wg.wg.Done()
+			defer func() {
+				if x := recover(); x != nil {
+					panic(x)
+				}
+
+				wg.wg.Done()
+			}()
+
 			f()
 		}()
 	}
@@ -68,6 +76,9 @@ func (wg *WaitGroup) Go(fs ...func()) {
 
 // GoN starts a task n times concurrently and increases the internal count by n.
 // The internal count will be descreased by one when each of the task instances is done.
+// Note: if the f call panics, then the whole program crashes.
+//
+// See: https://github.com/golang/go/issues/18022 and https://github.com/golang/go/issues/76126
 func (wg *WaitGroup) GoN(n int, f func()) {
 	if n < 0 {
 		panic("the count must not be negative")
@@ -78,7 +89,13 @@ func (wg *WaitGroup) GoN(n int, f func()) {
 	wg.wg.Add(n)
 	for i := 0; i < n; i++ {
 		go func() {
-			defer wg.wg.Done()
+			defer func() {
+				if x := recover(); x != nil {
+					panic(x)
+				}
+
+				wg.wg.Done()
+			}()
 			f()
 		}()
 	}
