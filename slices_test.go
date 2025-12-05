@@ -67,3 +67,27 @@ func TestSlice(t *testing.T) {
 		t.Fatalf("UnnamedSlice: TypeOf(w) != TypeOf(z)\n\t%s\n\t%s", TypeOf(w), TypeOf(z))
 	}
 }
+
+func TestMakeOneElemSlice(t *testing.T) {
+	var p *int
+	if MakeOneElemSlice(p) != nil {
+		t.Fatal("MakeOneElemSlice(nil) != nil")
+	}
+
+	p = &[]int{123}[0]
+	if s := MakeOneElemSlice(p); s == nil {
+		t.Fatal("MakeOneElemSlice(p) == nil")
+	} else {
+		if s[0] != 123 {
+			t.Fatal("s[0] != 123")
+		}
+		s[0] = 789
+		if *p != 789 {
+			t.Fatal("*p != 789")
+		}
+		*p = 666
+		if s[0] != 666 {
+			t.Fatal("s[0] != 666")
+		}
+	}
+}

@@ -1,5 +1,7 @@
 package nstd
 
+import "unsafe"
+
 // MakeSlice makes a slice with the specified length.
 // Different from the built-in [make] function, the capacity
 // of the result slice might be larger than the length.
@@ -29,6 +31,17 @@ func UnnamedSlice[S ~[]T, T any](s S) []T {
 	return s
 }
 
+// MakeOneElemSlice makes a slice containing exact one element from a pointer to element.
+// Nil pointers result nil slices.
+//
+// See: https://github.com/golang/go/issues/76135
+func MakeOneElemSlice[T any](e *T) []T {
+	if e == nil {
+		return nil
+	}
+	return unsafe.Slice(e, 1)
+}
+
 // SliceElemPointers returns an iterator which iterates element pointers of a slice.
 func SliceElemPointers[E any](s []E) func(func(*E) bool) {
 	return func(yield func(*E) bool) {
@@ -39,3 +52,5 @@ func SliceElemPointers[E any](s []E) func(func(*E) bool) {
 		}
 	}
 }
+
+// ToDo: OneElemSlice: https://github.com/golang/go/issues/76109 https://github.com/golang/go/issues/76135
