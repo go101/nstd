@@ -98,3 +98,12 @@ func ReverseRuneSeq[Seq ByteSeq](s Seq) []byte {
 
 	return into
 }
+
+// MakeDirtyBytes makes a dirty byte slice with the specified length.
+// Here, "dirty" means byte values will not be reset to 0.
+func MakeDirtyBytes(len int) []byte {
+	var b strings.Builder
+	b.Grow(len)
+	var p = unsafe.StringData(b.String())
+	return unsafe.Slice(p, b.Cap())[:len]
+}
