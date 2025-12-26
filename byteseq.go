@@ -1,7 +1,9 @@
 package nstd
 
 import (
+	"strings"
 	"unicode/utf8"
+	"unsafe"
 )
 
 // A ByteSeq is either a string or a byte slice.
