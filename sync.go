@@ -47,7 +47,7 @@ type WaitGroup struct {
 }
 
 // GoN starts several concurrent tasks and increases the internal count by len(fs).
-// The internal count will be descreased by one when each of the task is done.
+// The internal count will be decreased by one when each of the task is done.
 // Note: if a call to any function in fs panics, then the whole program crashes.
 //
 // See: https://github.com/golang/go/issues/18022 and https://github.com/golang/go/issues/76126
@@ -75,7 +75,7 @@ func (wg *WaitGroup) Go(fs ...func()) {
 }
 
 // GoN starts a task n times concurrently and increases the internal count by n.
-// The internal count will be descreased by one when each of the task instances is done.
+// The internal count will be decreased by one when each of the task instances is done.
 // Note: if the f call panics, then the whole program crashes.
 //
 // See: https://github.com/golang/go/issues/18022 and https://github.com/golang/go/issues/76126
@@ -108,7 +108,7 @@ func (wg *WaitGroup) Wait() {
 
 // WaitChannel returns a channel which reads will block until the internal counter is zero.
 func (wg *WaitGroup) WaitChannel() <-chan struct{} {
-	var c = make(chan struct{})
+	c := make(chan struct{})
 
 	go func() {
 		wg.wg.Wait()
@@ -116,4 +116,31 @@ func (wg *WaitGroup) WaitChannel() <-chan struct{} {
 	}()
 
 	return c
+}
+
+type Pool[T any] struct {
+	pool  sync.Pool
+	New   func() T
+	Reset func(T) T
+}
+
+func (p *Pool[T]) Put(x T) {
+	p.pool.Put(x)
+}
+
+func (p *Pool[T]) Get() (x T) {
+	v := p.pool.Get()
+	if v == nil {
+		if p.New != nil {
+			return p.New()
+		}
+		return x
+	}
+
+	x = v.(T)
+	if p.Reset != nil {
+		x = p.Reset(x)
+	}
+
+	return x
 }
